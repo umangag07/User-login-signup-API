@@ -1,6 +1,9 @@
-doctype html
-html
-    head
-        title  #{title}
-    body
-        h1 we are using Pug
+extends layout
+
+block content
+    h1 We are using pug
+    ul
+        each article, i in articles
+            li= article.Id
+            li= article.Title
+            li= article.Author

@@ -11,7 +11,30 @@ app.set('view engine','pug');
 
 //Home route
 app.get("/",(req,res)=>{
-      res.render('index',{title:'Passed obj to pug'})
+    let articles = [
+        {
+            Id:1,
+            Title:'Article one',
+            Author:'Author 1'
+        },
+        {
+            Id:2,
+            Title:'Article two',
+            Author:'Author 2'
+        },
+        {
+            Id:3,
+            Title:'Article thee',
+            Author:'Author 3'
+        },
+    ]
+      res.render('index',{title:'Passed obj to pug',articles:articles})
+});
+
+//Add route
+
+app.get('/pages/add', (req,res)=>{
+    res.render('add',{title:'Add template'})
 })
 
 
