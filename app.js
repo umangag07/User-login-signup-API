@@ -1,42 +1,40 @@
 const express = require('express')
 const path = require('path')
+const mongoose = require('mongoose')
+const bodyparser =require('body-parser')
+const cors = require('cors')
+require('dotenv/config')
+
+
 //Init app
 const PORT = 5000;
 let app = express()
 
+//Midle ware
+app.use(bodyparser.json());
+app.use(cors());
+
 
 //Load view engine
-app.set('views', path.join(__dirname,'views'))
-app.set('view engine','pug');
+ app.set('views', path.join(__dirname,'views'))
+ app.set('view engine','pug');
 
 //Home route
 app.get("/",(req,res)=>{
-    let articles = [
-        {
-            Id:1,
-            Title:'Article one',
-            Author:'Author 1'
-        },
-        {
-            Id:2,
-            Title:'Article two',
-            Author:'Author 2'
-        },
-        {
-            Id:3,
-            Title:'Article thee',
-            Author:'Author 3'
-        },
-    ]
-      res.render('index',{title:'Passed obj to pug',articles:articles})
+     res.send("we on home")
 });
 
-//Add route
+const ArticleRoute = require('./Routes/ArticleRoute')
+app.use('/article', ArticleRoute);
 
-app.get('/pages/add', (req,res)=>{
-    res.render('add',{title:'Add template'})
+
+
+//Database connect
+
+mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true,useUnifiedTopology:true},(err)=>{
+      if(err) console.log(err)
+      console.log("COnnected to the db")
 })
-
 
 //start server
 app.listen(PORT || 3000,(err)=>{
