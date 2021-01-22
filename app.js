@@ -24,8 +24,8 @@ app.get("/",(req,res)=>{
      res.send("we on home")
 });
 
-const ArticleRoute = require('./Routes/ArticleRoute')
-app.use('/article', ArticleRoute);
+const UserRoute = require('./Routes/UserRoute')
+app.use('/user', UserRoute);
 
 
 
