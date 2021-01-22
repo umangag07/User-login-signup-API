@@ -79,4 +79,33 @@ router.post("/signup", (req, res) => {
     res.send("Enter all the needed fields to signup");
   }
 });
+
+router.delete('/:userId',(req, res)=>{
+    console.log(req.params.userId);
+    User.find({_id:req.params.userId},(err, result)=>{
+        console.log(result)
+        if(err){
+            console.log("1"+err)
+        }
+        else{
+            if(result.length>=1){
+                console.log(result)
+                User.deleteOne({_id:req.params.userId})
+                .exec()
+                .then(result=>{
+                    console.log("user removed" + result)
+                    res.status(200).send("User removed successfully")
+                })
+                .catch(err =>{
+                    console.log(err)
+                    res.send(503).body(err)
+                })
+            }else{
+                res.status(404).send("User not found")
+            }
+           
+        }
+    })
+    
+})
 module.exports = router;
