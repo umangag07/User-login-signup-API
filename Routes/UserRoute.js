@@ -3,6 +3,8 @@ let router = express.Router();
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
+
+// Get All the users
 router.get("/getAllUsers", async (req, res) => {
   try {
     const Users = await User.find();
@@ -13,12 +15,43 @@ router.get("/getAllUsers", async (req, res) => {
   }
 });
 
+//User Login
+router.post('/signin', (req,res)=>{
+     if(Object.keys(req.body).length === 2){
+         User.find({email:req.body.email})
+              .exec()       // Match the object or string and if matched it return as it is otherwise null
+              .then((user)=>{
+                //   console.log(user[0].password);
+                  if(user.length>=1){
+                      bcrypt.compare(req.body.password, user[0].password, (err,result)=>{
+                          if(err){
+                              res.status(403).send("User not authorized");
+                          }
+                          else{
+                              if(result == true){
+                                res.status(200).send("User Authorized Successfully");
+                              }else{
+                                res.status(403).send("User not authorized");
+                              }
+                          }
+                      } )
+                  }else{
+                    res.status(403).send("User not found");
+                  }
+              })
+     }else{
+         res.status(400).send("Required fields not found")
+     }
+})
+
+//User.Signup
 router.post("/signup", (req, res) => {
   console.log(Object.keys(req.body).length);
   if (Object.keys(req.body).length === 2) {
     User.find({ email: req.body.email })
       .exec()
       .then((user) => {
+          console.log("kzhdbjsdbvsd vhsdv "+ user.length)
         if (user.length >= 1) {
           res.send("User Exists");
           console.log("user exists");
