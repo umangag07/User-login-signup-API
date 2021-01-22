@@ -14,6 +14,9 @@ let app = express()
 app.use(bodyparser.json());
 app.use(cors());
 
+// setting public folder
+app.use(express.static(path.join(__dirname,'Public')));
+
 
 //Load view engine
  app.set('views', path.join(__dirname,'views'))
